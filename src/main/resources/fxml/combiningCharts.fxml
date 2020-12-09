@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="300" prefWidth="500" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyApp.controllers.CombiningChartsController">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ListView fx:id="listView1" />
+            <VBox HBox.hgrow="ALWAYS">
+               <children>
+                  <Button maxWidth="1.7976931348623157E308" minWidth="60.0" mnemonicParsing="false" text="Right" VBox.vgrow="ALWAYS" onAction="#rightActions"/>
+                  <Button maxWidth="1.7976931348623157E308" minWidth="60.0" mnemonicParsing="false" text="Left" VBox.vgrow="ALWAYS"  onAction="#leftActions"/>
+               </children>
+            </VBox>
+            <ListView fx:id="listView2" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
