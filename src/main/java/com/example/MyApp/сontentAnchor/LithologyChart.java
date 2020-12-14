@@ -63,10 +63,10 @@ public class LithologyChart {
             });
 
             setOnMouseDragged(event -> {
-                if (event.getY() > getHeight()/2) {
+                if (event.getY() > getHeight()/2 && getCursor().equals(Cursor.N_RESIZE)) {
                     AnchorPane.setBottomAnchor(this, AnchorPane.getBottomAnchor(this) + (getHeight() - event.getY()));
                 }
-                if (event.getY() < getHeight()/2) {
+                if (event.getY() < getHeight()/2 && getCursor().equals(Cursor.N_RESIZE)) {
                     AnchorPane.setTopAnchor(this, AnchorPane.getTopAnchor(this) + event.getY());
                 }
             });
