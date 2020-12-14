@@ -134,4 +134,9 @@ public class LasParser {
         }
     }
 
+    public void clearData(){
+        methodsData.clear();
+        methodsNames.clear();
+    }
+
 }

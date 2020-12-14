@@ -44,10 +44,11 @@ public class MainController {
         chooser.setTitle("Open File");
         chooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(".las", "*.las"));
-//        chooser.setInitialDirectory(new File("D:\\Study\\Примеры для камертона"));
+        chooser.setInitialDirectory(new File("D:\\Study\\Примеры для камертона"));
         File file = chooser.showOpenDialog(openFile.getParentPopup().getScene().getWindow());
 
         if (file != null) {
+            lasParser.clearData();
             lasParser.parsing(file);
 
             content.getChildren().clear();

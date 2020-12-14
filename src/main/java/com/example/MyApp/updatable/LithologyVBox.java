@@ -1,6 +1,5 @@
 package com.example.MyApp.updatable;
 
-import com.example.MyApp.сontentAnchor.LithologyAnchor;
 import com.example.MyApp.сontentAnchor.LithologyChart;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
