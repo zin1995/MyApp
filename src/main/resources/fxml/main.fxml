@@ -10,42 +10,45 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="root" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyApp.controllers.MainController">
+<VBox fx:id="root" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyApp.controllers.MainController">
     <children>
-      <HBox>
-         <children>
-              <MenuBar>
-                  <menus>
-                      <Menu mnemonicParsing="false" text="File">
-                          <items>
-                              <MenuItem disable="true" mnemonicParsing="false" text="New" />
-                              <MenuItem fx:id="openFile" mnemonicParsing="false" onAction="#openFile" text="Open…" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem disable="true" mnemonicParsing="false" text="Save" />
-                              <MenuItem disable="true" mnemonicParsing="false" text="Save As…" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem disable="true" mnemonicParsing="false" text="Quit" />
-                          </items>
-                      </Menu>
-                      <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
-                          <items>
-                              <Menu fx:id="methodsMenu" mnemonicParsing="false" text="Methods" />
-                          </items>
-                      </Menu>
-                      <Menu mnemonicParsing="false" text="Help">
-                          <items>
-                              <MenuItem mnemonicParsing="false" text="About Kam" />
-                          </items>
-                      </Menu>
-                  </menus>
-              </MenuBar>
-              <ToolBar prefHeight="25.0" prefWidth="49.0" style="-fx-padding: 0px;" HBox.hgrow="ALWAYS">
-                  <items>
-                      <Button fx:id="lithology" disable="true" mnemonicParsing="false" onAction="#showLithology" prefHeight="25.0" prefWidth="75.0" text="Литология" />
-                  </items>
-              </ToolBar>
-         </children>
-      </HBox>
-      <AnchorPane fx:id="content" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+        <HBox>
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem disable="true" mnemonicParsing="false" text="New"/>
+                                <MenuItem fx:id="openFile" mnemonicParsing="false" onAction="#openFile" text="Open…"/>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <MenuItem disable="true" mnemonicParsing="false" text="Save"/>
+                                <MenuItem disable="true" mnemonicParsing="false" text="Save As…"/>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <MenuItem disable="true" mnemonicParsing="false" text="Quit"/>
+                            </items>
+                        </Menu>
+                        <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Saturation" onAction="#addSaturation"/>
+                                <Menu fx:id="methodsMenu" mnemonicParsing="false" text="Methods"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About Kam"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <ToolBar prefHeight="25.0" prefWidth="49.0" style="-fx-padding: 0px;" HBox.hgrow="ALWAYS">
+                    <items>
+                        <Button fx:id="lithology" disable="true" mnemonicParsing="false" onAction="#addLithology"
+                                prefHeight="25.0" prefWidth="75.0" text="Литология"/>
+                    </items>
+                </ToolBar>
+            </children>
+        </HBox>
+        <AnchorPane fx:id="content" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
     </children>
 </VBox>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vBox" minWidth="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyApp.controllers.MethodsVBoxController">
+   <children>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <Button fx:id="button" maxWidth="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#addChart" text="+" />
+            <ColorPicker fx:id="colorPicker" maxWidth="28.0" minWidth="28.0" onAction="#chooseColor" />
+            <ComboBox fx:id="comboBox" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-insets: 0;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+        <content>
+          <AnchorPane fx:id="anchorPane" />
+        </content>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </ScrollPane>
+   </children>
+</VBox>

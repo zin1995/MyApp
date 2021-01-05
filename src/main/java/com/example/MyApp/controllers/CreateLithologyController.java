@@ -7,24 +7,29 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
+import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 @Component
-@FxmlView("/fxml/createLithology.fxml")
-public class LithologyController {
+@FxmlView("/fxml/lithologyCreatingWindow.fxml")
+public class CreateLithologyController {
 
     @Autowired
     LasParser lasParser;
     @Autowired
     ContentController contentController;
+    @Autowired
+    ApplicationContext applicationContext;
     @FXML
     VBox firstVBox;
     @FXML
@@ -46,15 +51,23 @@ public class LithologyController {
     public void initialize() {
         this.stage = new Stage();
         stage.setScene(new Scene(anchorPane));
+        stage.initModality(Modality.APPLICATION_MODAL);
+
 
         setComboBoxSettings();
         new FirstLithologyIntervalsHBox(createTextField());
         new SecondLithologyIntervalsHBox(createTextField(), createTextField());
+        stage.show();
+    }
+
+    @FXML
+    private void closeAction(ActionEvent actionEvent) {
+        stage.close();
     }
 
     @FXML
     private void OkAction(ActionEvent actionEvent) {
-        String[] lithologyData = new String[lasParser.getDeptData().length];
+        HashMap<String, ArrayList<Double[]>> lithologyIntervalsMap = new HashMap<>();
 
         if (comboBox1.getValue() != null) {
             for (HBox hBox : firstPaneHBox) {
@@ -63,12 +76,15 @@ public class LithologyController {
                 String lithologyName = ((ComboBox<String>) hBox.getChildren().get(2)).getValue();
                 if (tf1.getText() != null && tf2.getText() != null && lithologyName != null) {
                     String[] data = calculateLithologyData(tf1.getText(), tf2.getText(), lithologyName, comboBox1.getValue());
-                    for (int i = 0; i < data.length; i++) {
-                        if (data[i] != null) lithologyData[i] = data[i];
-                    }
+                    lithologyIntervalsMap.put(lithologyName, calculateLithologyIntervals(data));
                 }
             }
-            contentController.addLithologyPane(lithologyData);
+
+
+            LithologyVBoxController lithologyVBoxController = applicationContext.getBean(FxWeaver.class).loadController(LithologyVBoxController.class);
+            lithologyVBoxController.setLithologyIntervals(lithologyIntervalsMap);
+            lithologyVBoxController.setLithologyName("Литология " + comboBox1.getValue());
+            contentController.addLithologyPane(lithologyVBoxController);
         }
 
         if (comboBox2.getValue() != null && comboBox3.getValue() != null && comboBox2.getValue() != comboBox3.getValue()) {
@@ -81,28 +97,59 @@ public class LithologyController {
                 if (tf1.getText() != null && tf2.getText() != null && tf3.getText() != null && tf4.getText() != null && lithologyName != null) {
                     String[] data1 = calculateLithologyData(tf1.getText(), tf2.getText(), lithologyName, comboBox2.getValue());
                     String[] data2 = calculateLithologyData(tf3.getText(), tf4.getText(), lithologyName, comboBox3.getValue());
+                    String[] lithologyData = new String[lasParser.getDeptData().length];
                     for (int i = 0; i < data1.length; i++) {
                         if (data1[i] == null || data2 == null) continue;
                         if (data1[i].equals(data2[i])) lithologyData[i] = data1[i];
                     }
+                    lithologyIntervalsMap.put(lithologyName, calculateLithologyIntervals(lithologyData));
                 }
             }
-            contentController.addLithologyPane(lithologyData);
+
+            LithologyVBoxController lithologyVBoxController = applicationContext.getBean(FxWeaver.class).loadController(LithologyVBoxController.class);
+            lithologyVBoxController.setLithologyIntervals(lithologyIntervalsMap);
+            lithologyVBoxController.setLithologyName("Литология " + comboBox2.getValue() + "+" + comboBox3.getValue());
+            contentController.addLithologyPane(lithologyVBoxController);
         }
 
+        firstPaneHBox.clear();
+        secondPaneHBox.clear();
         stage.close();
     }
 
-    public String[] calculateLithologyData(String tf1, String tf2, String lithologyName, String methodName) {
+    private ArrayList<Double[]> calculateLithologyIntervals(String[] lithologyData){
+        ArrayList<Double[]> lithologyIntervals = new ArrayList<>();
+        Double start = -1.0;
+        Double end = -1.0;
+        for (int i = 0; i < lithologyData.length; i++) {
+            if (lithologyData[i] != null && start==-1) {
+                start = (double)i;
+                if(i == lithologyData.length-1){
+                    end = (double)i-1;
+                    lithologyIntervals.add(new Double[]{start, end});
+                }
+            }
+            if (lithologyData[i] == null && start!=-1) {
+                end = (double)i-1;
+                lithologyIntervals.add(new Double[]{start, end});
+                start = (double)-1;
+            }
+        }
+
+        return lithologyIntervals;
+    }
+
+    private String[] calculateLithologyData(String tf1, String tf2, String lithologyName, String methodName) {
         double[] methodData = lasParser.getMethodsData().get(methodName);
         String[] lithologyData = new String[methodData.length];
-        double start = Double.parseDouble(tf1);
-        double end = Double.parseDouble(tf2);
+        double min = Double.parseDouble(tf1);
+        double max = Double.parseDouble(tf2);
         for (int i = 0; i < methodData.length; i++) {
-            if (methodData[i] >= start && methodData[i] < end) {
+            if (methodData[i] >= min && methodData[i] < max) {
                 lithologyData[i] = lithologyName;
             }
         }
+
         return lithologyData;
     }
 
@@ -221,15 +268,6 @@ public class LithologyController {
             secondVBox.getChildren().add(this);
             secondPaneHBox.add(this);
         }
-    }
-
-    @FXML
-    private void closeAction(ActionEvent actionEvent) {
-        stage.close();
-    }
-
-    public void show() {
-        stage.show();
     }
 }
 

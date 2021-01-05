@@ -5,14 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
 import java.io.File;
 
 @Component
@@ -26,13 +24,9 @@ public class MainController {
     @Autowired
     LasParser lasParser;
     @FXML
-    VBox root;
-    @FXML
     MenuItem openFile;
     @FXML
     Menu methodsMenu;
-    @FXML
-    Menu editMenu;
     @FXML
     Button lithology;
     @FXML
@@ -60,9 +54,14 @@ public class MainController {
     }
 
     @FXML
-    private void showLithology() {
+    private void addLithology() {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        fxWeaver.loadController(LithologyController.class).show();
+        fxWeaver.loadView(CreateLithologyController.class);
+    }
+
+    @FXML
+    private void addSaturation(){
+        contentController.addSaturationPane();
     }
 
     private void addContent() {

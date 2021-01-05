@@ -1,4 +1,4 @@
-package com.example.MyApp.сontentAnchor;
+package com.example.MyApp.charts;
 
 import com.example.MyApp.LasParser;
 import javafx.scene.layout.AnchorPane;
@@ -7,6 +7,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,18 +31,14 @@ public class MethodChart {
         colorMap.put(methodName, color);
     }
 
-    public void drawChart(AnchorPane anchorPane, String methodName, double widthMultiplier){
+    public void drawChart(AnchorPane anchorPane, String methodName, double width) {
         double[] methodData = lasParser.getMethodsData().get(methodName);
         double minXValue = calculateMinValue(methodData);
         double maxXValue = calculateMaxValue(methodData);
-        double xDivider = (maxXValue - minXValue) / (widthMultiplier);
+        double xDivider = (maxXValue - minXValue) / width;
         if (minXValue == maxXValue) minXValue = 0.0;
         Color color = colorMap.get(methodName);
 
-        drawCh(anchorPane, methodData, minXValue, xDivider, color);
-    }
-
-    private void drawCh(AnchorPane anchorPane, double[] methodData, double minXValue, double xDivider, Color color) {
         double lastXPoint = (methodData[0] - minXValue) / xDivider + 10;
         double lastYPoint = 0;
         for (int i = 0; i < methodData.length; i++) {
@@ -49,7 +46,7 @@ public class MethodChart {
             double currentXPoint = (methodData[i] - minXValue) / xDivider + 10;
 
             if (i % 5 == 0) {
-                Line line = new Line(0, currentYPoint, anchorPane.getMaxWidth(), currentYPoint);
+                Line line = new Line(0, currentYPoint, width + 20, currentYPoint);
                 line.setStrokeWidth(0.1);
                 anchorPane.getChildren().add(line);
             }
@@ -81,17 +78,14 @@ public class MethodChart {
     }
 
 
-    public void drawMouseCoordinate(AnchorPane anchorPane, String methodName, double widthMultiplier){
+    public void drawMouseCoordinate(AnchorPane anchorPane, String methodName, double widthMultiplier) {
         double[] methodData = lasParser.getMethodsData().get(methodName);
         double minXValue = calculateMinValue(methodData);
         double maxXValue = calculateMaxValue(methodData);
         double xDivider = (maxXValue - minXValue) / (widthMultiplier);
-        drawMC(anchorPane, methodData, minXValue, xDivider);
-    }
-
-    private void drawMC(AnchorPane anchorPane, double[] methodData, double minXValue, double xDivider) {
         double deptStep = lasParser.getDeptStep();
         double dept0 = lasParser.getDeptData()[0];
+
         anchorPane.setOnMouseExited(event -> {
             if (anchorPane.getChildren().get(anchorPane.getChildren().size() - 1) instanceof Text) {
                 anchorPane.getChildren().remove(anchorPane.getChildren().size() - 4, anchorPane.getChildren().size());
@@ -112,7 +106,7 @@ public class MethodChart {
 
                 anchorPane.getChildren().add(line1);
                 anchorPane.getChildren().add(line2);
-                anchorPane.getChildren().add(new Text(event.getX(), event.getY() - 1, String.format("%.1f", event.getY()*deptStep / depthMultiplier + dept0)));
+                anchorPane.getChildren().add(new Text(event.getX(), event.getY() - 1, String.format("%.1f", event.getY() * deptStep / depthMultiplier + dept0)));
                 anchorPane.getChildren().add(new Text(event.getX(), event.getY() - 10, methodData[(int) Math.round(event.getY() / depthMultiplier)] + ""));
             }
         });
